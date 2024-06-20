@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>WebSocket Client</title>
+  </head>
+  <body>
+    <h1>WebSocket Client</h1>
+    <script>
+      const socket = new WebSocket('ws://localhost:3001');
+
+      socket.onopen = () => {
+        console.log('WebSocket is connected');
+        socket.send('Hello Server');
+      };
+
+      socket.onmessage = (event) => {
+        console.log('Received from server:', event.data);
+      };
+
+      socket.onclose = (event) => {
+        console.log('WebSocket is closed now.');
+      };
+
+      socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+    </script>
+  </body>
+</html>
