@@ -1,28 +1,51 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WebSocket Client</title>
   </head>
   <body>
     <h1>WebSocket Client</h1>
+    <p>Messages received: <span id="counter">0</span></p>
+    <div id="messages"></div>
     <script>
-      const socket = new WebSocket('ws://localhost:3001');
+      let messageCount = 0;
 
+      // URL do WebSocket - ajuste conforme necessário
+      const wsUrl = 'ws://localhost:3001';
+
+      // Conectar ao WebSocket
+      const socket = new WebSocket(wsUrl);
+
+      // Quando o WebSocket abrir
       socket.onopen = () => {
         console.log('WebSocket is connected');
-        socket.send('Hello Server');
+        document.getElementById('messages').innerHTML +=
+          '<p>WebSocket is connected</p>';
       };
 
+      // Quando receber uma mensagem do WebSocket
       socket.onmessage = (event) => {
+        messageCount++;
+        document.getElementById('counter').textContent = messageCount;
         console.log('Received from server:', event.data);
+        document.getElementById('messages').innerHTML +=
+          `<p>Received: ${event.data}</p>`;
       };
 
+      // Quando o WebSocket fechar
       socket.onclose = (event) => {
         console.log('WebSocket is closed now.');
+        document.getElementById('messages').innerHTML +=
+          '<p>WebSocket is closed now.</p>';
       };
 
+      // Quando ocorrer um erro no WebSocket
       socket.onerror = (error) => {
         console.error('WebSocket error:', error);
+        document.getElementById('messages').innerHTML +=
+          `<p>WebSocket error: ${error}</p>`;
       };
     </script>
   </body>
